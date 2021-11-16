@@ -7,7 +7,7 @@
  * Last Modified: Nov 15, 2021
  * Description:  Modify MileageCalculatorNoConversion into PAssign09 and practice with github. 
  */
-package ch17;
+package ch16;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -89,6 +89,7 @@ public class PAssign09 extends Application { // Task 1: Create a second branch a
         tfResult.setOnAction(e -> calcMileage());   
         btnReset.setOnAction(e -> resetForm());
         
+        cmbType.valueProperty().addListener(ov -> convert());
         cmbType.setOnAction(e -> changeLabels());
         
         // create a scene and place it in the stage
@@ -120,6 +121,32 @@ public class PAssign09 extends Application { // Task 1: Create a second branch a
     		lblCapacity.setText(defaultCapacity);
         	lblDistance.setText(defaultMileage);
         	lblResult.setText(defaultResult);
+    	}
+    }
+    
+    private void convert() {
+    	double distance = 0.0, capacity = 0.0;
+    	
+    	if (tfCapacity.getText() != null && !tfCapacity.getText().isEmpty()
+        		&& tfDistance.getText() != null && !tfDistance.getText().isEmpty()) {
+        	distance = Double.parseDouble(tfDistance.getText());
+            capacity = Double.parseDouble(tfCapacity.getText());
+        }
+    	
+    	if (cmbType.getValue().equals(altResult)) {
+    		// convert imperial to metric
+    		distance *= 1.60934;
+    		tfDistance.setText(String.format("%.2f", distance));
+    		capacity *= 3.78541;
+    		tfCapacity.setText(String.format("%.2f", capacity));
+    		calcMileage();
+    	} else {
+    		// convert metric to imperial
+    		distance *= 0.621371;
+    		tfDistance.setText(String.format("%.2f", distance));
+    		capacity *= 0.264172;
+    		tfCapacity.setText(String.format("%.2f", capacity));
+    		calcMileage();
     	}
     }
     
